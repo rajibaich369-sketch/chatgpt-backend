@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 app.post("/chat", async (req, res) => {
   try {
     const { message } = req.body;
-    if (!message) return res.status(400).json({ error: "মেসেজ দেওয়া হয়নি" });
+    if (!message) return res.status(400).json({ error: "Message required" });
 
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
@@ -26,7 +26,7 @@ app.post("/chat", async (req, res) => {
 
     res.json({ reply: response.choices[0].message.content });
   } catch (error) {
-    res.status(500).json({ error: "OpenAI API তে সমস্যা হয়েছে" });
+    res.status(500).json({ error: error.message || "OpenAI API Error" });
   }
 });
 
